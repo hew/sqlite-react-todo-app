@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const useLogin = () => {
   const [query] = useState({email: 'user01', password: 'superdupersecure01'});
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     async function fetch() {
@@ -13,23 +14,26 @@ export const useLogin = () => {
           email: query.email,
           password: query.password
         }
-      });
+      }).catch((err) => console.log(err));
 
-      const {token} = result.data;
-      localStorage.setItem(process.env.STORAGE_KEY_NAME, token);
+      if (result && result.data) {
+        const {token} = result.data;
+
+        setToken(token);
+      }
     }
 
     fetch();
   }, []);
 
-  return;
+  return token;
 };
 
 export const useFilterList = (todoList) => {
   const [list, setList] = useState(todoList);
 
   const filterByEnum = (enum_, l) => {
-    setList(l.filter((item) => item.state === enum_))
+    setList(l.filter((item) => item.state === enum_));
   };
 
   const filterByToday = (l) =>
@@ -38,8 +42,8 @@ export const useFilterList = (todoList) => {
         const itemDate = new Date(item.dueDate);
         const currentDate = new Date();
 
-        console.log(item.dueDate)
-        const comparison = (itemDate.getDay() - currentDate.getDay() === 0)
+        console.log(item.dueDate);
+        const comparison = itemDate.getDay() - currentDate.getDay() === 0;
 
         return comparison;
       })

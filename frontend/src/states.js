@@ -55,7 +55,6 @@ export default Machine({
   },
   states: {
     loggedOut: {
-      on: {TRY_AUTH: {target: 'authCheck', actions: []}},
       on: {
         LOGIN: {
           target: 'loggedIn',

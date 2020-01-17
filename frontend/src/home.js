@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, {useEffect, useState} from 'react'; // required for fragments
-// import axios from 'axios';
 import {jsx, Styled as s} from 'theme-ui';
 import {useHistory} from 'react-router';
 import {useMachineValue} from './states.js';
@@ -8,14 +7,12 @@ import {useLogin} from './hooks';
 
 export default ({navigate}) => {
   const history = useHistory();
-  const [current, send] = useMachineValue();
+  const [, send] = useMachineValue();
+  const token = useLogin();
 
-  console.log(current.value);
-
-  useLogin();
- 
   const handleClick = (_evt) => {
-    const token = localStorage.getItem(process.env.STORAGE_KEY_NAME);
+
+    if(!token.length) { return }
 
     // Transition to 'loggedIn' global state
     send("LOGIN", {data: token})
