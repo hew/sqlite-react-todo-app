@@ -1,0 +1,19 @@
+{
+  "name": "sqlite-react-todo-app",
+  "author": "matthew jones <matt@hew.tools>",
+  "license": "MIT",
+  "private": true,  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hew/sqlite-react-todo-app.git"
+  },
+  "homepage": "https://github.com/hew/sqlite-react-todo-app#readme",
+  "bugs": {
+    "url": "https://github.com/hew/sqlite-react-todo-app/issues"
+  },
+  "scripts": {
+    "start-frontend": "yarn workspace frontend run start",
+    "start-backend": "yarn workspace backend run start"
+  },
+  "workspaces": ["backend", "frontend"]
+}

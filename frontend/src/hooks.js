@@ -1,0 +1,51 @@
+import {useState, useEffect} from 'react';
+import axios from 'axios';
+
+export const useLogin = () => {
+  const [query] = useState({email: 'user01', password: 'superdupersecure01'});
+
+  useEffect(() => {
+    async function fetch() {
+      const result = await axios({
+        method: 'post',
+        url: 'http://localhost:1233/public/login',
+        data: {
+          email: query.email,
+          password: query.password
+        }
+      });
+
+      const {token} = result.data;
+      localStorage.setItem(process.env.STORAGE_KEY_NAME, token);
+    }
+
+    fetch();
+  }, []);
+
+  return;
+};
+
+export const useFilterList = (todoList) => {
+  const [list, setList] = useState(todoList);
+
+  const filterByEnum = (enum_, l) => {
+    setList(l.filter((item) => item.state === enum_))
+  };
+
+  const filterByToday = (l) =>
+    setList(
+      l.filter((item) => {
+        const itemDate = new Date(item.dueDate);
+        const currentDate = new Date();
+
+        console.log(item.dueDate)
+        const comparison = (itemDate.getDay() - currentDate.getDay() === 0)
+
+        return comparison;
+      })
+    );
+
+  const resetList = (l) => setList(l);
+
+  return [list, setList, {filterByToday, filterByEnum, resetList}];
+};
